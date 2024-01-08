@@ -3,7 +3,7 @@
 
 ## Introduction
 
-https://pypi.org/project/time-pattern-cohesion-score/0.0.1/
+https://pypi.org/project/tpcs/0.0.1/
 
 TPCS is a metric to assess how well time-dependent patterns within a time series signal remain connected over time, with an emphasis on recency.
 
