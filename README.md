@@ -1,0 +1,130 @@
+
+# Sequentiality
+
+## Introduction
+
+https://pypi.org/project/time-pattern-cohesion-score/0.0.1/
+
+TPCS is a metric to assess how well time-dependent patterns within a time series signal remain connected over time, with an emphasis on recency.
+
+We calculate TPCS using 4 main features
+
+Consistency: shows if data collection is consistent with respect to  start and end time of data crawling  , (from  2020-09 to current time)
+
+Intra Consistency: shows if data collection was consistent with respect to signal’s own start and end time. 
+
+Contiguity: shows how contiguous data is. 5 is fully contiguous which means all existed values are sequential
+
+Recent Contiguity: shows how contiguous recent data is. 
+
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Dependencies](#dependencies)
+- [Documentation](#documentation)
+- [Examples](#examples)
+- [Contributors](#contributors)
+- [License](#license)
+
+## Installation
+
+```python
+pip install tpcs
+```
+
+## How does it work?
+
+How TPC is calculated?
+We are first extracting relevant attributes from with the help of sequentiality package.  These attributes are:
+
+total sample size (**n_of_samples**)
+
+Longest Consecutive Subsequence of months  (**LCS_m**)
+
+Longest Consecutive Subsequence of months with 1 gap month (**LCS_m_1g**)
+
+Longest Consecutive Subsequence of months with 2 gap month (**LCS_m_1g**)
+
+Longest Consecutive Subsequence of months from last timestamp (**LCS_m_from_last**)
+
+Longest Consecutive Subsequence of months from last timestamp  with 1 gap month (**LCS_m_from_last_1g**)
+
+Longest Consecutive Subsequence of months from last timestamp  with 2 gap month  (**LCS_m_from_last_2g**)
+
+Longest Consecutive Subsequence of months from end time (**LCS_m_from_end**)
+
+Longest Consecutive Subsequence of months from end time  with 1 gap month  (**LCS_m_from_end_1g**)
+
+ 
+And then these attributes are group together into 4 features:
+
+Consistency: shows if data collection is consistent with respect to  start and end time of data crawling  , (from  2020-09 to current time)
+
+Intra Consistency: shows if data collection was consistent with respect to signal’s own start and end time. 
+
+Recent Contiguity: shows how contiguous recent data is
+
+Contiguity: shows how  contiguous data is. 5 is fully contiguous which means all existed values are sequential
+
+Then These features are turned into scores by calculating their ratio to max signal length and normalizing them between 0 and 5. 
+
+And we take weighted avg of these normalized scores to calculate TPC.  
+
+## Features & Usage
+
+TPCS provides methods for the following feature extraction capabilities:
+
+calculate_LCS_m()
+calculate_LCS_m_1n()
+calculate_LCS_m_2n()
+calculate_LCS_m_from_end_of_signal()
+calculate_LCS_m_from_end_of_signal_1n()
+calculate_LCS_m_from_end_of_signal_2n()
+calculate_LCS_m_from_end_of_time()
+calculate_LCS_m_from_end_of_time_1n()
+
+calculate_features()
+
+
+```python
+
+#we have signal which have date values and magnitude values. 
+TPC requires dates of this signal as input. 
+
+import datetime
+date_list = ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01', '2023-06-01', '2023-07-01', '2023-08-01', '2023-09-01', '2023-11-01', '2023-12-01', '2024-01-01']
+# there are 12 months in this list. '2023-10-01'  is missing. 
+
+date_list = [datetime.datetime.strptime(date_str, "%Y-%m-%d").date() for date_str in specific_dates]
+
+weights={ "contiguity_score":0.5,
+                  "recent_contiguity_score":3,
+                  "consistency_score":0.8,
+                  "intra_consistency_score":1
+    
+          }
+  
+MAX_LEN_MONTHS=  13  
+END_OF_TIME=  '2024-01-01' 
+TPC_score, tpcs_details =TPCS(date_list, MAX_LEN_MONTHS, END_OF_TIME=END_OF_TIME,  debug=False, return_details=True)
+ 
+
+```
+
+## Documentation
+https://github.com/karaposu/time-pattern-cohesion-score
+
+## License
+
+MIT License
+
+Copyright (c) 2024 Enes Kuzucu
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

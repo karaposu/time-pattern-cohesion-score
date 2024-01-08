@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+src/time_pattern_cohesion_score/__init__.py
+src/time_pattern_cohesion_score/time_pattern_cohesion_score.py
+src/tpcs.egg-info/PKG-INFO
+src/tpcs.egg-info/SOURCES.txt
+src/tpcs.egg-info/dependency_links.txt
+src/tpcs.egg-info/requires.txt
+src/tpcs.egg-info/top_level.txt
