@@ -1,5 +1,5 @@
 
-# Sequentiality
+# Time Pattern Cohesion Score
 
 ## Introduction
 
@@ -37,7 +37,7 @@ pip install tpcs
 
 ## How does it work?
 
-How TPC is calculated?
+How TPC score is calculated?
 We are first extracting relevant attributes from with the help of sequentiality package.  These attributes are:
 
 total sample size (**n_of_samples**)
