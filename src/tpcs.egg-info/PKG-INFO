@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: tpcs
-Version: 0.0.1
+Version: 0.0.2
 Summary: TPCS is a metric to assess how well time-dependent patterns within a time series signal remain connected over time, with an emphasis on recency.
 Home-page: https://github.com/karaposu/time-pattern-cohesion-score
 Author: Enes
@@ -17,23 +17,25 @@ Requires-Dist: pandas>=1.15.0
 Requires-Dist: sequentiality
 
 
-# Sequentiality
+# Time Pattern Cohesion Score
 
 ## Introduction
 
-https://pypi.org/project/time-pattern-cohesion-score/0.0.1/
+https://pypi.org/project/tpcs/0.0.1/
 
 TPCS is a metric to assess how well time-dependent patterns within a time series signal remain connected over time, with an emphasis on recency.
 
-We calculate TPCS using 4 main features
+![TPCS](https://github.com/karaposu/time-pattern-cohesion-score/tpcs_illustration)
 
-Consistency: shows if data collection is consistent with respect to  start and end time of data crawling  , (from  2020-09 to current time)
+### We calculate TPCS using 4 main features :
 
-Intra Consistency: shows if data collection was consistent with respect to signal’s own start and end time. 
+**Consistency** : shows if data collection is consistent with respect to  start and end time of data crawling  , (from  2020-09 to current time)
 
-Contiguity: shows how contiguous data is. 5 is fully contiguous which means all existed values are sequential
+**Intra Consistency** : shows if data collection was consistent with respect to signal’s own start and end time. 
 
-Recent Contiguity: shows how contiguous recent data is. 
+**Contiguity** : shows how contiguous data is. 5 is fully contiguous which means all existed values are sequential
+
+**Recent Contiguity** : shows how contiguous recent data is. 
 
 
 ## Table of Contents
@@ -55,37 +57,38 @@ pip install tpcs
 
 ## How does it work?
 
-How TPC is calculated?
-We are first extracting relevant attributes from with the help of sequentiality package.  These attributes are:
+###How TPC score is calculated?
 
-total sample size (**n_of_samples**)
+We are first extracting relevant attributes from signals with the help of sequentiality package.  These attributes are:
 
-Longest Consecutive Subsequence of months  (**LCS_m**)
+1. total sample size (**n_of_samples**)
 
-Longest Consecutive Subsequence of months with 1 gap month (**LCS_m_1g**)
+2. Longest Consecutive Subsequence of months  (**LCS_m**)
 
-Longest Consecutive Subsequence of months with 2 gap month (**LCS_m_1g**)
+3. Longest Consecutive Subsequence of months with 1 gap month (**LCS_m_1g**)
 
-Longest Consecutive Subsequence of months from last timestamp (**LCS_m_from_last**)
+4. Longest Consecutive Subsequence of months with 2 gap month (**LCS_m_1g**)
 
-Longest Consecutive Subsequence of months from last timestamp  with 1 gap month (**LCS_m_from_last_1g**)
+5. Longest Consecutive Subsequence of months from last timestamp (**LCS_m_from_last**)
 
-Longest Consecutive Subsequence of months from last timestamp  with 2 gap month  (**LCS_m_from_last_2g**)
+6. Longest Consecutive Subsequence of months from last timestamp  with 1 gap month (**LCS_m_from_last_1g**)
 
-Longest Consecutive Subsequence of months from end time (**LCS_m_from_end**)
+7. Longest Consecutive Subsequence of months from last timestamp  with 2 gap month  (**LCS_m_from_last_2g**)
 
-Longest Consecutive Subsequence of months from end time  with 1 gap month  (**LCS_m_from_end_1g**)
+8. Longest Consecutive Subsequence of months from end time (**LCS_m_from_end**)
+
+9. Longest Consecutive Subsequence of months from end time  with 1 gap month  (**LCS_m_from_end_1g**)
 
  
 And then these attributes are group together into 4 features:
 
-Consistency: shows if data collection is consistent with respect to  start and end time of data crawling  , (from  2020-09 to current time)
+**Consistency** : shows if data collection is consistent with respect to  start and end time of data crawling  , (from  2020-09 to current time)
 
-Intra Consistency: shows if data collection was consistent with respect to signal’s own start and end time. 
+**Intra Consistency** : shows if data collection was consistent with respect to signal’s own start and end time. 
 
-Recent Contiguity: shows how contiguous recent data is
+**Contiguity** : shows how contiguous data is. 5 is fully contiguous which means all existed values are sequential
 
-Contiguity: shows how  contiguous data is. 5 is fully contiguous which means all existed values are sequential
+**Recent Contiguity** : shows how contiguous recent data is. 
 
 Then These features are turned into scores by calculating their ratio to max signal length and normalizing them between 0 and 5. 
 
@@ -93,28 +96,16 @@ And we take weighted avg of these normalized scores to calculate TPC.
 
 ## Features & Usage
 
-TPCS provides methods for the following feature extraction capabilities:
-
-calculate_LCS_m()
-calculate_LCS_m_1n()
-calculate_LCS_m_2n()
-calculate_LCS_m_from_end_of_signal()
-calculate_LCS_m_from_end_of_signal_1n()
-calculate_LCS_m_from_end_of_signal_2n()
-calculate_LCS_m_from_end_of_time()
-calculate_LCS_m_from_end_of_time_1n()
-
-calculate_features()
+TPC score designed as a data quality assesment for time signals. It is really easy to use. 
 
 
 ```python
 
-#we have signal which have date values and magnitude values. 
-TPC requires dates of this signal as input. 
+#Lets assume we have signal of interest. TPC requires dates of this signal as input. 
 
 import datetime
 date_list = ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01', '2023-06-01', '2023-07-01', '2023-08-01', '2023-09-01', '2023-11-01', '2023-12-01', '2024-01-01']
-# there are 12 months in this list. '2023-10-01'  is missing. 
+# there are 12 months in this list. '2023-10-01'  is missing.  
 
 date_list = [datetime.datetime.strptime(date_str, "%Y-%m-%d").date() for date_str in specific_dates]
 
@@ -127,7 +118,9 @@ weights={ "contiguity_score":0.5,
   
 MAX_LEN_MONTHS=  13  
 END_OF_TIME=  '2024-01-01' 
-TPC_score, tpcs_details =TPCS(date_list, MAX_LEN_MONTHS, END_OF_TIME=END_OF_TIME,  debug=False, return_details=True)
+
+tpcs =TPCS(date_list, MAX_LEN_MONTHS, END_OF_TIME=END_OF_TIME,  debug=False, return_details=True)
+TPC_score, tpcs_details=tpcs.calculate_TPCS(weights=weights, printing=False)
  
 
 ```
