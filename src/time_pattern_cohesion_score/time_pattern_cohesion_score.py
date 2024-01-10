@@ -1,5 +1,6 @@
 import pandas as pd
-from sequentiality import Sequentiality
+# from sequentiality import Sequentiality
+from Sequentiality import Sequentiality
  
 
 class TPCS:
@@ -218,7 +219,7 @@ class TPCS:
         print("cconsistency :",consistency_score)
         print("Intra consistency :",intra_consistency_score)
         print("TPCS (weighted avg of all) :",tpcs)
-
+      
       tpcs_details={
                 "consistency": consistency_score,
                 "intra_consistency":  intra_consistency_score,
