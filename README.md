@@ -30,10 +30,31 @@ TPCS is a metric to assess how well time-dependent patterns within a time series
 - [Examples](#examples)
 - [License](#license)
 
-## Installation
+## Installation & Import
 
 ```python
 pip install tpcs
+```
+```python
+import pandas as pd
+from time_pattern_cohesion_score import TPCS
+END_OF_TIME= pd.to_datetime("2021-05-01")
+MAX_LEN_MONTHS=13
+list_of_timestamps= ["2020-05-01","2020-06-01","2020-07-01","2020-08-01","2020-09-01","2020-10-01","2020-11-01","2020-12-01","2021-01-01", "2021-03-01","2021-04-01","2021-05-01" ]
+#notice that "2021-02-01" is missing
+list_of_timestamps= [pd.to_datetime(e) for  e in list_of_timestamps]
+
+tpcs=TPCS(list_of_timestamps,MAX_LEN_MONTHS, END_OF_TIME )
+
+print(tpcs.calculate_TPCS())
+
+# Output: 
+# Contiguity : 4.49
+# Recent_contiguity: 2.88
+# cconsistency : 3.46
+# Intra consistency : 3.75
+# TPCS (weighted avg of all) : 3.64
+s
 ```
 
 ## How does it work?
